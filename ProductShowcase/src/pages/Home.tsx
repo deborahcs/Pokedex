@@ -5,11 +5,12 @@ import { Link } from 'react-router-dom';
 
 // Componente principal que renderiza a lista de Pokemons da API
 export function Home() {
-  // Cria o estado para armazenar a lista de pokemons
-  const [pokemons, setPokemons] = useState<Pokemon[]>([]);
-  // Cria um estado para saber se a pagina ainda esta carregando dados
-  const [loading, setLoading] = useState(true); 
-
+    // Cria o estado para armazenar a lista de pokemons
+    const [pokemons, setPokemons] = useState<Pokemon[]>([]);
+    // Cria um estado para saber se a pagina ainda esta carregando dados
+    const [loading, setLoading] = useState(true);
+    // Criando o estado de busca
+    const [searchTerm, setSearchTerm] = useState("");
 
   // Executa a busca na API assim que o componente e montado na tela
   useEffect(() => {
@@ -27,11 +28,11 @@ export function Home() {
                 name: string; url: string }[];
 
             // Transforma os dados brutos no formato do obj pokemon
-        const pokemonsWithId: Pokemon[] = results.map((pokemon) => {
-          // Extrai o ID do pokemon a partir da URL fornecida pela API
-          const id = parseInt(pokemon.url.split('/').filter(Boolean).pop() || '0');
-        
-          return {
+            const pokemonsWithId: Pokemon[] = results.map((pokemon) => {
+            // Extrai o ID do pokemon a partir da URL fornecida pela API
+            const id = parseInt(pokemon.url.split('/').filter(Boolean).pop() || '0');
+
+        return {
             name: pokemon.name,
             url: pokemon.url,
             id: id // atribuindo o valor da variável 'id'
@@ -48,6 +49,10 @@ export function Home() {
 
     fetchPokemons();
   }, []);
+    // Nova lista contendo apenas os pokemons que foram digitados
+    const filteredPokemons = pokemons.filter((pokemon) => 
+        pokemon.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
   // Se o estado de carregamento for verdadeiro, exibe apenas uma mensagem
   if (loading) {
     return <div>Carregando...</div>;
@@ -61,8 +66,15 @@ export function Home() {
       
       {/* max-w-7xl centraliza o grid em telas gigantes e não deixa esticar muito */}
       <div className="max-w-7xl mx-auto"> 
+        <input 
+            type="text"
+            placeholder="Buscar pokémon..."
+            value={searchTerm}
+            className="w-full max-w-md mx-auto block p-4 mb-8 border border-gray-200 rounded-2xl shadow-sm text-center text-black"
+            onChange={(e) => setSearchTerm(e.target.value)}
+/>
         <ul className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-          {pokemons.map((pokemon) => (
+          {filteredPokemons.map((pokemon) => (
           <li 
   key={pokemon.id} 
   className="group border bg-white p-4 rounded-3xl flex flex-col items-center shadow-sm hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 cursor-pointer border-gray-100"

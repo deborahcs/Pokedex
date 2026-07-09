@@ -12,7 +12,21 @@ export function Home() {
   useEffect(() => {
     async function fetchPokemons() {
       const response = await api.get('/pokemon');
-      setPokemons(response.data.results);
+      
+      // Definimos o formato do que vem da API
+      const results = response.data.results as { name: string; url: string }[];
+
+      const pokemonsWithId: Pokemon[] = results.map((pokemon) => {
+        const id = parseInt(pokemon.url.split('/').filter(Boolean).pop() || '0');
+        
+        return {
+          name: pokemon.name,
+          url: pokemon.url,
+          id
+        };
+      });
+
+      setPokemons(pokemonsWithId);
     }
 
     fetchPokemons();
@@ -22,8 +36,12 @@ export function Home() {
     <div>
       <h1>Página Home Lista de Pokémons</h1>
       <ul>
-        {pokemons.map((pokemon, index) => (
-          <li key={index}>
+        {pokemons.map((pokemon) => (
+          <li key={pokemon.id}>
+            <img 
+              src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png`} 
+              alt={pokemon.name} 
+            />
             <Link to={`/details/${pokemon.name}`}>{pokemon.name}</Link>
           </li>
         ))}

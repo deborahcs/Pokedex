@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { api } from '../services/api';
 import type { Pokemon } from '../types/pokemon';
+import { Link } from 'react-router-dom';
 
 // Componente principal que renderiza a lista de Pokemons da API
 export function Home() {
@@ -22,7 +23,9 @@ export function Home() {
       <h1>Página Home Lista de Pokémons</h1>
       <ul>
         {pokemons.map((pokemon, index) => (
-          <li key={index}>{pokemon.name}</li>
+          <li key={index}>
+            <Link to="/details">{pokemon.name}</Link>
+          </li>
         ))}
       </ul>
     </div>

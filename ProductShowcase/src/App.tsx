@@ -15,7 +15,7 @@ export default function App() {
         
         {/* Route define o caminho na URL e o componente que sera renderizado na tela */}
         <Route path="/" element={<Home />} />
-        <Route path="/details" element={<Details />} />
+        <Route path="/details/:name" element={<Details />} />
         
       </Routes>
       

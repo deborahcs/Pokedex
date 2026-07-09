@@ -24,7 +24,7 @@ export function Home() {
       <ul>
         {pokemons.map((pokemon, index) => (
           <li key={index}>
-            <Link to="/details">{pokemon.name}</Link>
+            <Link to={`/details/${pokemon.name}`}>{pokemon.name}</Link>
           </li>
         ))}
       </ul>

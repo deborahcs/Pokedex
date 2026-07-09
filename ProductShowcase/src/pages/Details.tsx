@@ -39,24 +39,42 @@ export function Details() {
   if (!pokemon) return <div>Pokémon não encontrado.</div>;
 
   return (
-    <div>
-      {/* Exibe o nome do pokemon */}
-      <h1>{pokemon.name}</h1>
-      
-      {/* Exibe a imagem oficial de alta qualidade vinda da API */}
-      <img 
-        src={pokemon.sprites.other["official-artwork"].front_default} 
-        alt={pokemon.name} 
-      />
-      
-      {/* Divide por 10 para converter as unidades da API (decimetros/hectogramas) para metros/kg */}
-      <p>Altura: {pokemon.height / 10}m</p>
-      <p>Peso: {pokemon.weight / 10}kg</p>
-      
-      {/* Mapeia a lista de tipos do pokemon e transforma em um texto separado por virgula */}
-      <div>
-        Tipos: {pokemon.types.map((t) => t.type.name).join(', ')}
+   // resolucao
+    <div className="min-h-screen w-full bg-gray-100 flex items-center justify-center p-4">
+      <div className="bg-white p-8 rounded-3xl shadow-xl max-w-sm w-full text-center">
+        {/* Nome com destaque */}
+        <h1 className="text-4xl font-black capitalize text-gray-800 mb-4">{pokemon.name}</h1>
+        
+        {/* Imagem com fundo circular */}
+        <div className="bg-gray-50 rounded-full w-48 h-48 mx-auto flex items-center justify-center mb-6 border-4 border-gray-100">
+          <img 
+            className="w-40 h-40 object-contain"
+            src={pokemon.sprites.other["official-artwork"].front_default} 
+            alt={pokemon.name} 
+          />
+        </div>
+        
+        {/* Informacoes em grid de duas colunas */}
+        <div className="grid grid-cols-2 gap-4 mb-6">
+          <div className="bg-blue-50 p-3 rounded-xl">
+            <p className="text-xs text-blue-600 font-bold uppercase">Altura</p>
+            <p className="text-lg font-semibold text-gray-700">{pokemon.height / 10}m</p>
+          </div>
+          <div className="bg-blue-50 p-3 rounded-xl">
+            <p className="text-xs text-blue-600 font-bold uppercase">Peso</p>
+            <p className="text-lg font-semibold text-gray-700">{pokemon.weight / 10}kg</p>
+          </div>
+        </div>
+
+        {/* Tipos com badges */}
+        <div className="flex justify-center gap-2">
+          {pokemon.types.map((t) => (
+            <span key={t.type.name} className="px-4 py-1 bg-gray-800 text-white rounded-full text-sm font-medium capitalize">
+              {t.type.name}
+            </span>
+          ))}
+        </div>
       </div>
     </div>
-  )
+  );
 }

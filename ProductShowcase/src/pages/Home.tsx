@@ -34,7 +34,7 @@ export function Home() {
           return {
             name: pokemon.name,
             url: pokemon.url,
-            id: id // Aqui atribuímos o valor da variável 'id'
+            id: id // atribuindo o valor da variável 'id'
           };
         });
 
@@ -42,7 +42,7 @@ export function Home() {
       } catch (error) {
         console.error("Erro ao buscar pokémons:", error);
       } finally {
-        setLoading(false); // Agora sim, desligamos o loading!
+        setLoading(false); // desligando o loading
       }
     }
 
@@ -54,21 +54,38 @@ export function Home() {
   }
 
   return (
-    <div>
-      <h1>Página Home Lista de Pokémons</h1>
-      <ul>
-        {pokemons.map((pokemon) => (
-          <li key={pokemon.id}>
-            {/* Exibe a imagem do pokemon usando o ID extraido */}
-            <img 
-              src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png`} 
-              alt={pokemon.name} 
-            />
-            {/* Cria o link dinamico p/ a pagina de detalhes */}
-            <Link to={`/details/${pokemon.name}`}>{pokemon.name}</Link>
-          </li>
-        ))}
-      </ul>
+    <div className="min-h-screen bg-gray-50 p-4 md:p-8"> {/* p-8 resolucao para telas grandes */}
+      <h1 className="text-3xl font-bold text-center mb-8 text-gray-800">
+        Pokédex
+      </h1>
+      
+      {/* max-w-7xl centraliza o grid em telas gigantes e não deixa esticar muito */}
+      <div className="max-w-7xl mx-auto"> 
+        <ul className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+          {pokemons.map((pokemon) => (
+          <li 
+  key={pokemon.id} 
+  className="group border bg-white p-4 rounded-3xl flex flex-col items-center shadow-sm hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 cursor-pointer border-gray-100"
+>
+  <img 
+    className="w-28 h-28 object-contain transition-transform duration-300 group-hover:scale-110"
+    src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png`} 
+    alt={pokemon.name} 
+  />
+  
+  <div className="mt-4 text-center">
+    <span className="text-xs text-gray-400 font-mono">#{String(pokemon.id).padStart(3, '0')}</span>
+    <Link 
+      to={`/details/${pokemon.name}`} 
+      className="block text-lg font-bold capitalize text-gray-700 hover:text-blue-600 transition-colors"
+    >
+      {pokemon.name}
+    </Link>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
-  )
+  );
 }
